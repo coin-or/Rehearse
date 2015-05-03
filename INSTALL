@@ -1,0 +1,28 @@
+BUILDING AND INSTALLING Rehearse
+================================
+
+Download other Coin-or dependencies
+-----------------------------------
+Rehearse needs other projects from Coin-or to build : Cbc, Cgl, Clp, CoinUtils, Osi
+
+To download these dependencies, just run :
+
+./download_dependencies.sh
+
+
+Build
+-----
+In the root folder of Rehearse, the following commands may be used to obtain and build Rehearse from the source code:
+
+./configure
+make
+make test
+sudo make install
+
+
+
+
+
+
+
+

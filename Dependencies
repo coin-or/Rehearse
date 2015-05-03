@@ -1,0 +1,6 @@
+BuildTools  https://projects.coin-or.org/svn/BuildTools/stable/0.8
+Cbc  https://projects.coin-or.org/svn/Cbc/stable/2.9/
+Cgl  https://projects.coin-or.org/svn/Cgl/stable/0.59/Cgl
+Clp  https://projects.coin-or.org/svn/Clp/stable/1.16/Clp
+CoinUtils  https://projects.coin-or.org/svn/CoinUtils/stable/2.10/CoinUtils
+Osi  https://projects.coin-or.org/svn/Osi/stable/0.107/Osi

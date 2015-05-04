@@ -17,7 +17,7 @@ In the root folder of Rehearse, the following commands may be used to obtain and
 ./configure
 make
 make test
-sudo make install
+make install
 
 
 

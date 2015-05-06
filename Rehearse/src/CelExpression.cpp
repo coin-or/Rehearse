@@ -323,8 +323,6 @@ bool CelExpression::isLinear(){
         return left->isLinear();
     }
 
-    bool leftIsVariable = left && left->isVariable();
-    bool rightIsVariable = right && right->isVariable();
     switch (this->node_type){
         case NODE_CONSTANT:
         case NODE_VARIABLE:
@@ -337,9 +335,12 @@ bool CelExpression::isLinear(){
 
         case NODE_OP_MULT:
         case NODE_OP_DIV:
+            {
+                bool left_is_variable = left && left->isVariable();
+                bool right_is_variable = right && right->isVariable();
 
-            return !(leftIsVariable && rightIsVariable);
-
+                return !(left_is_variable && right_is_variable);
+            }
 
         case NODE_OP_LTE:
         case NODE_OP_EQ:

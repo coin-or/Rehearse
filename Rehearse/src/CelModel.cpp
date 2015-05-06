@@ -116,7 +116,7 @@ void CelModel::addConstraint(CelExpression &expression){
 
         coin_build.addRow(current_column_index, index_array_ptr, coef_array_ptr, lower, upper);
 
-        delete index_array_ptr;
+        delete[] index_array_ptr;
 
     }
 
@@ -147,15 +147,17 @@ double CelModel::getSolutionValue(CelVariable &variable){
     }
 
     const double *solution = solver.getColSolution();
+
+#ifdef DEBUG_COEFS
     int cols = solver.getNumCols();
+    printf("cols = %d \n", cols);
+    printf("column_index = %d \n", column_index);
 
-    // printf("cols = %d \n", cols);
-    // printf("column_index = %d \n", column_index);
-
-    // for (int i=0; i<cols; i++){
-    //     printf("%f ", solution[i]);
-    // }
-    // printf("\n");
+    for (int i=0; i<cols; i++){
+        printf("%f ", solution[i]);
+    }
+    printf("\n");
+#endif
 
     return solution[column_index];
 }

@@ -27,20 +27,22 @@ CelExpression::~CelExpression(){
 }
 
 void CelExpression::attributeColumnIndex(vector<CelVariable *> &model_variables){
-    if (node_type == NODE_PROXY){
-        return left->attributeColumnIndex(model_variables);
-    }
+    CelExpression *cur_node = this;
 
-    if (node_type == NODE_VARIABLE){
-        if (column_index == -1){
-            column_index = model_variables.size();
-            model_variables.push_back((CelVariable *)this);
-        }
-    } else {
-        if (left)
+    while (cur_node){
+        if (cur_node->node_type == NODE_PROXY){
             left->attributeColumnIndex(model_variables);
-        if (right)
-            right->attributeColumnIndex(model_variables);
+        } else if (cur_node->node_type == NODE_VARIABLE){
+            if (cur_node->column_index == -1){
+                cur_node->column_index = model_variables.size();
+                model_variables.push_back((CelVariable *)cur_node);
+            }
+        } else {
+            if (cur_node->right){
+                cur_node->right->attributeColumnIndex(model_variables);
+            }
+        }
+        cur_node = cur_node->left;
     }
 }
 
@@ -336,7 +338,18 @@ bool CelExpression::isLinear(){
 
         case NODE_OP_ADD:
         case NODE_OP_SUB:
-            return left->isLinear() && right->isLinear();
+            {
+                CelExpression *cur_node = this;
+
+                while (cur_node->node_type == NODE_OP_ADD ||
+                       cur_node->node_type == NODE_OP_SUB){
+                    if (!right->isLinear()){
+                        return false;
+                    }
+                    cur_node = cur_node->left;
+                }
+                return cur_node->isLinear();
+            }
 
         case NODE_OP_MULT:
         case NODE_OP_DIV:

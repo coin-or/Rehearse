@@ -34,6 +34,7 @@ protected:
 
     bool deletable;
     virtual void displayMeOnly();
+    bool isComparisonOrAdditiveOperator(NodeType node_type);
     bool isComparisonOperator(NodeType node_type);
     bool isBinaryOperator(NodeType node_type);
 

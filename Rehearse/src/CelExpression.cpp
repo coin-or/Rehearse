@@ -109,7 +109,6 @@ void CelExpression::fillConstraintLinearCoefficients(LinearCoefficients &linear_
 }
 
 
-
 void CelExpression::fillLinearCoefficientMap(){
     if (node_type == NODE_PROXY){
         left->fillLinearCoefficientMap();
@@ -129,31 +128,37 @@ void CelExpression::fillLinearCoefficientMap(){
 
         constant_coefficient = constant_value;
 
-    } else if (node_type == NODE_OP_ADD || node_type == NODE_OP_SUB || isComparisonOperator(node_type)){
+    } else if (isComparisonOrAdditiveOperator(node_type)){
+        CelExpression *cur_node = this;
 
-        left->fillLinearCoefficientMap();
-        right->fillLinearCoefficientMap();
+        while (isComparisonOrAdditiveOperator(cur_node->node_type)){
 
-        for (LinearCoefficientMap::iterator it=left->coefficient_map.begin(); it!=left->coefficient_map.end(); ++it){
-            coefficient_map[it->first] = it->second;
-        }
+            cur_node->right->fillLinearCoefficientMap();
+            for (LinearCoefficientMap::iterator it=cur_node->right->coefficient_map.begin(); it!=cur_node->right->coefficient_map.end(); ++it){
+                if (!coefficient_map.count(it->first)){
+                    coefficient_map[it->first] = 0.0;
+                }
 
-        for (LinearCoefficientMap::iterator it=right->coefficient_map.begin(); it!=right->coefficient_map.end(); ++it){
-            if (!coefficient_map.count(it->first)){
-                coefficient_map[it->first] = 0.0;
+                if (cur_node->node_type == NODE_OP_ADD){
+                    coefficient_map[it->first] += it->second;
+                } else if (cur_node->node_type == NODE_OP_SUB || isComparisonOperator(cur_node->node_type)) {
+                    coefficient_map[it->first] -= it->second;
+                }
             }
 
-            if (node_type == NODE_OP_ADD){
-                coefficient_map[it->first] += it->second;
-            } else if (node_type == NODE_OP_SUB || isComparisonOperator(node_type)) {
-                coefficient_map[it->first] -= it->second;
+            if (cur_node->node_type == NODE_OP_ADD){
+                constant_coefficient += cur_node->right->constant_coefficient;
+            } else if (cur_node->node_type == NODE_OP_SUB || isComparisonOperator(cur_node->node_type)){
+                constant_coefficient -= cur_node->right->constant_coefficient;
             }
-        }
 
-        if (node_type == NODE_OP_ADD){
-            constant_coefficient = left->constant_coefficient + right->constant_coefficient;
-        } else if (node_type == NODE_OP_SUB || isComparisonOperator(node_type)){
-            constant_coefficient = left->constant_coefficient - right->constant_coefficient;
+            if (!isComparisonOrAdditiveOperator(cur_node->left->node_type)){
+                for (LinearCoefficientMap::iterator it=cur_node->left->coefficient_map.begin(); it!=cur_node->left->coefficient_map.end(); ++it){
+                    coefficient_map[it->first] = it->second;
+                }
+            }
+
+            cur_node = cur_node->left;
         }
 
     } else if (node_type == NODE_OP_MULT){
@@ -382,6 +387,9 @@ bool CelExpression::isConsistentConstraint(){
     return false;
 }
 
+bool CelExpression::isComparisonOrAdditiveOperator(NodeType node_type){
+    return (node_type == NODE_OP_ADD || node_type == NODE_OP_SUB || isComparisonOperator(node_type));
+}
 bool CelExpression::isComparisonOperator(NodeType node_type){
     return (node_type == NODE_OP_LTE || node_type == NODE_OP_EQ);
 }

@@ -47,7 +47,7 @@ public:
 
     CelVariableArray& operator[](size_t index){
         if (index >= dimensions[current_dimension_index]){
-            throw std::out_of_range("BAD SUBSCRIPT ERROR");  // commodore64 lover
+            throw std::out_of_range("BAD SUBSCRIPT ERROR"); // commodore64 lover
         }
 
         current_offset += index * dimension_factors[current_dimension_index];

@@ -9,13 +9,17 @@ using namespace std;
 CelExpression::CelExpression() : column_index(-1),
                                  node_type(NODE_UNKNOWN),
                                  left(NULL), right(NULL),
-                                 constant_value(0.0), constant_coefficient(0.0), deletable(false) {
+                                 constant_value(0.0),
+                                 constant_coefficient(0.0),
+                                 deletable(false) {
 }
 
 CelExpression::CelExpression(bool deletable) : column_index(-1),
                                                node_type(NODE_UNKNOWN),
                                                left(NULL), right(NULL),
-                                               constant_value(0.0), constant_coefficient(0.0), deletable(deletable) {
+                                               constant_value(0.0),
+                                               constant_coefficient(0.0),
+                                               deletable(deletable) {
 }
 
 
@@ -26,7 +30,9 @@ CelExpression::~CelExpression(){
         delete right;
 }
 
-void CelExpression::attributeColumnIndex(vector<CelVariable *> &model_variables){
+void CelExpression::attributeColumnIndex(
+    vector<CelVariable *> &model_variables){
+
     CelExpression *cur_node = this;
 
     while (cur_node){
@@ -46,18 +52,27 @@ void CelExpression::attributeColumnIndex(vector<CelVariable *> &model_variables)
     }
 }
 
-void CelExpression::fillExpressionLinearCoefficients(LinearCoefficients &linear_coefficients){
+void CelExpression::fillExpressionLinearCoefficients(
+    LinearCoefficients &linear_coefficients){
+
     fillLinearCoefficientMap();
 
-    for (LinearCoefficientMap::iterator it=coefficient_map.begin(); it!=coefficient_map.end(); ++it){
-        linear_coefficients[it->first] = it->second;
+    for (const auto &it : coefficient_map){
+        linear_coefficients[it.first] = it.second;
     }
 }
 
 
-void CelExpression::fillConstraintLinearCoefficients(LinearCoefficients &linear_coefficients, double infinity, double &lower, double &upper){
+void CelExpression::fillConstraintLinearCoefficients(
+    LinearCoefficients &linear_coefficients,
+    double infinity,
+    double &lower,
+    double &upper){
+
     if (node_type == NODE_PROXY){
-        return left->fillConstraintLinearCoefficients(linear_coefficients, infinity, lower, upper);
+        return left->fillConstraintLinearCoefficients(linear_coefficients,
+                                                      infinity,
+                                                      lower, upper);
     }
 
     if (node_type == NODE_OP_LTE){
@@ -65,20 +80,20 @@ void CelExpression::fillConstraintLinearCoefficients(LinearCoefficients &linear_
             left->fillLinearCoefficientMap();
             right->fillLinearCoefficientMap();
 
-            for (LinearCoefficientMap::iterator it=left->coefficient_map.begin(); it!=left->coefficient_map.end(); ++it){
-                coefficient_map[it->first] = -1.0 * it->second;
+            for (const auto &it : left->coefficient_map){
+                coefficient_map[it.first] = -1.0 * it.second;
             }
 
-            for (LinearCoefficientMap::iterator it=right->coefficient_map.begin(); it!=right->coefficient_map.end(); ++it){
-                if (!coefficient_map.count(it->first)){
-                    coefficient_map[it->first] = 0.0;
+            for (const auto &it : right->coefficient_map){
+                if (!coefficient_map.count(it.first)){
+                    coefficient_map[it.first] = 0.0;
                 }
 
-                coefficient_map[it->first] -= it->second;
+                coefficient_map[it.first] -= it.second;
             }
 
-            for (LinearCoefficientMap::iterator it=coefficient_map.begin(); it!=coefficient_map.end(); ++it){
-                linear_coefficients[it->first] = it->second;
+            for (const auto &it : coefficient_map){
+                linear_coefficients[it.first] = it.second;
             }
 
             lower = left->constant_coefficient;
@@ -87,8 +102,8 @@ void CelExpression::fillConstraintLinearCoefficients(LinearCoefficients &linear_
         } else {
             fillLinearCoefficientMap();
 
-            for (LinearCoefficientMap::iterator it=coefficient_map.begin(); it!=coefficient_map.end(); ++it){
-                linear_coefficients[it->first] = it->second;
+            for (const auto &it : coefficient_map){
+                linear_coefficients[it.first] = it.second;
             }
 
             lower = -infinity;
@@ -99,8 +114,8 @@ void CelExpression::fillConstraintLinearCoefficients(LinearCoefficients &linear_
     } else if (node_type == NODE_OP_EQ) {
         fillLinearCoefficientMap();
 
-        for (LinearCoefficientMap::iterator it=coefficient_map.begin(); it!=coefficient_map.end(); ++it){
-            linear_coefficients[it->first] = it->second;
+        for (const auto &it : coefficient_map){
+            linear_coefficients[it.first] = it.second;
         }
 
         lower = -1.0 * this->constant_coefficient;
@@ -112,9 +127,10 @@ void CelExpression::fillConstraintLinearCoefficients(LinearCoefficients &linear_
 void CelExpression::fillLinearCoefficientMap(){
     if (node_type == NODE_PROXY){
         left->fillLinearCoefficientMap();
-        for (LinearCoefficientMap::iterator it=left->coefficient_map.begin(); it!=left->coefficient_map.end(); ++it){
-            coefficient_map[it->first] = it->second;
+        for (const auto &it : left->coefficient_map){
+            coefficient_map[it.first] = it.second;
         }
+
         return;
     }
 
@@ -134,28 +150,32 @@ void CelExpression::fillLinearCoefficientMap(){
         while (isComparisonOrAdditiveOperator(cur_node->node_type)){
 
             cur_node->right->fillLinearCoefficientMap();
-            for (LinearCoefficientMap::iterator it=cur_node->right->coefficient_map.begin(); it!=cur_node->right->coefficient_map.end(); ++it){
-                if (!coefficient_map.count(it->first)){
-                    coefficient_map[it->first] = 0.0;
+            for (const auto &it : cur_node->right->coefficient_map){
+                if (!coefficient_map.count(it.first)){
+                    coefficient_map[it.first] = 0.0;
                 }
 
                 if (cur_node->node_type == NODE_OP_ADD){
-                    coefficient_map[it->first] += it->second;
-                } else if (cur_node->node_type == NODE_OP_SUB || isComparisonOperator(cur_node->node_type)) {
-                    coefficient_map[it->first] -= it->second;
+                    coefficient_map[it.first] += it.second;
+                } else if (cur_node->node_type == NODE_OP_SUB ||
+                           isComparisonOperator(cur_node->node_type)) {
+                    coefficient_map[it.first] -= it.second;
                 }
             }
 
             if (cur_node->node_type == NODE_OP_ADD){
                 constant_coefficient += cur_node->right->constant_coefficient;
-            } else if (cur_node->node_type == NODE_OP_SUB || isComparisonOperator(cur_node->node_type)){
+            } else if (cur_node->node_type == NODE_OP_SUB ||
+                       isComparisonOperator(cur_node->node_type)){
                 constant_coefficient -= cur_node->right->constant_coefficient;
             }
 
             if (!isComparisonOrAdditiveOperator(cur_node->left->node_type)){
-                for (LinearCoefficientMap::iterator it=cur_node->left->coefficient_map.begin(); it!=cur_node->left->coefficient_map.end(); ++it){
-                    coefficient_map[it->first] = it->second;
+                cur_node->left->fillLinearCoefficientMap();
+                for (const auto &it : cur_node->left->coefficient_map){
+                    coefficient_map[it.first] = it.second;
                 }
+                constant_coefficient += cur_node->left->constant_coefficient;
             }
 
             cur_node = cur_node->left;
@@ -169,8 +189,9 @@ void CelExpression::fillLinearCoefficientMap(){
                 coefficient_map[right->column_index] = left->constant_value;
             } else {
                 right->fillLinearCoefficientMap();
-                for (LinearCoefficientMap::iterator it=right->coefficient_map.begin(); it!=right->coefficient_map.end(); ++it){
-                    coefficient_map[it->first] = left->constant_value * it->second;
+                for (const auto &it : right->coefficient_map){
+                    coefficient_map[it.first] = left->constant_value *
+                                                it.second;
                 }
             }
 
@@ -180,8 +201,9 @@ void CelExpression::fillLinearCoefficientMap(){
                 coefficient_map[left->column_index] = right->constant_value;
             } else {
                 left->fillLinearCoefficientMap();
-                for (LinearCoefficientMap::iterator it=left->coefficient_map.begin(); it!=left->coefficient_map.end(); ++it){
-                    coefficient_map[it->first] = right->constant_value * it->second;
+                for (const auto &it : left->coefficient_map){
+                    coefficient_map[it.first] = right->constant_value *
+                                                it.second;
                 }
             }
         }
@@ -204,15 +226,15 @@ bool CelExpression::hasSeveralConstraints(){
 }
 
 
-bool CelExpression::isDeletable(){
+bool CelExpression::isDeletable() const{
     return this->deletable;
 }
 
-void CelExpression::display(){
+void CelExpression::display() const{
     this->display(0);
 }
 
-void CelExpression::displayFlat(bool crlf){
+void CelExpression::displayFlat(bool crlf) const{
     if (this->left)
         this->left->displayFlat(false);
     this->displayMeOnly();
@@ -222,7 +244,7 @@ void CelExpression::displayFlat(bool crlf){
         printf("\n");
 }
 
-void CelExpression::display(int indent){
+void CelExpression::display(int indent) const{
     if (this->right)
         this->right->display(indent+1);
 
@@ -238,7 +260,7 @@ void CelExpression::display(int indent){
 
 }
 
-void CelExpression::displayMeOnly(){
+void CelExpression::displayMeOnly() const{
     switch (this->node_type){
         case NODE_PROXY:
             printf(" proxy ");
@@ -273,7 +295,7 @@ void CelExpression::displayMeOnly(){
 #endif
 }
 
-bool CelExpression::isVariable(){
+bool CelExpression::isVariable() const{
     if (this->node_type == NODE_PROXY){
         return left->isVariable();
     }
@@ -298,7 +320,7 @@ bool CelExpression::isVariable(){
     return false;
 }
 
-bool CelExpression::isConstant(){
+bool CelExpression::isConstant() const{
     if (this->node_type == NODE_PROXY){
         return left->isConstant();
     }
@@ -323,7 +345,7 @@ bool CelExpression::isConstant(){
     return false;
 }
 
-bool CelExpression::isLinear(){
+bool CelExpression::isLinear() const{
     if (this->node_type == NODE_PROXY){
         return left->isLinear();
     }
@@ -337,7 +359,7 @@ bool CelExpression::isLinear(){
         case NODE_OP_ADD:
         case NODE_OP_SUB:
             {
-                CelExpression *cur_node = this;
+                const CelExpression *cur_node = this;
 
                 while (cur_node->node_type == NODE_OP_ADD ||
                        cur_node->node_type == NODE_OP_SUB){
@@ -372,7 +394,7 @@ bool CelExpression::isLinear(){
     return false;
 }
 
-bool CelExpression::isConsistentConstraint(){
+bool CelExpression::isConsistentConstraint() const{
     if (node_type == NODE_PROXY){
         return left->isConsistentConstraint();
     }
@@ -383,7 +405,8 @@ bool CelExpression::isConsistentConstraint(){
                 return true;
             }
             if (left->node_type == NODE_OP_LTE){
-                if (left->left->isConstant() && !isComparisonOperator(left->right->node_type)){
+                if (left->left->isConstant() &&
+                    !isComparisonOperator(left->right->node_type)){
                     return true;
                 }
             }
@@ -398,18 +421,25 @@ bool CelExpression::isConsistentConstraint(){
     return false;
 }
 
-bool CelExpression::isComparisonOrAdditiveOperator(NodeType node_type){
-    return (node_type == NODE_OP_ADD || node_type == NODE_OP_SUB || isComparisonOperator(node_type));
+bool CelExpression::isComparisonOrAdditiveOperator(NodeType node_type) const{
+    return (node_type == NODE_OP_ADD ||
+            node_type == NODE_OP_SUB ||
+            isComparisonOperator(node_type));
 }
-bool CelExpression::isComparisonOperator(NodeType node_type){
-    return (node_type == NODE_OP_LTE || node_type == NODE_OP_EQ);
+bool CelExpression::isComparisonOperator(NodeType node_type) const{
+    return (node_type == NODE_OP_LTE ||
+            node_type == NODE_OP_EQ);
 }
-bool CelExpression::isBinaryOperator(NodeType node_type){
-    return (node_type == NODE_OP_ADD || node_type == NODE_OP_SUB || node_type == NODE_OP_MULT || node_type == NODE_OP_DIV);
+bool CelExpression::isBinaryOperator(NodeType node_type) const{
+    return (node_type == NODE_OP_ADD ||
+            node_type == NODE_OP_SUB ||
+            node_type == NODE_OP_MULT ||
+            node_type == NODE_OP_DIV);
 }
 
 
-CelExpression & operator <= (CelExpression &left_expression, double constant_value){
+CelExpression & operator <= (CelExpression &left_expression,
+                             double constant_value){
     CelExpression *right_expression = new CelExpression(true);
     right_expression->node_type = CelExpression::NODE_CONSTANT;
     right_expression->constant_value = constant_value;
@@ -422,7 +452,8 @@ CelExpression & operator <= (CelExpression &left_expression, double constant_val
     return *parent_expression;
 }
 
-CelExpression & operator <= (double constant_value, CelExpression &right_expression){
+CelExpression & operator <= (double constant_value,
+                             CelExpression &right_expression){
     CelExpression *left_expression = new CelExpression(true);
     left_expression->node_type = CelExpression::NODE_CONSTANT;
     left_expression->constant_value = constant_value;
@@ -435,7 +466,8 @@ CelExpression & operator <= (double constant_value, CelExpression &right_express
     return *parent_expression;
 }
 
-CelExpression & operator <= (CelExpression &left_expression, CelExpression &right_expression){
+CelExpression & operator <= (CelExpression &left_expression,
+                             CelExpression &right_expression){
     CelExpression *parent_expression = new CelExpression(true);
     parent_expression->node_type = CelExpression::NODE_OP_LTE;
     parent_expression->left = &left_expression;
@@ -444,7 +476,8 @@ CelExpression & operator <= (CelExpression &left_expression, CelExpression &righ
     return *parent_expression;
 }
 
-CelExpression & operator == (CelExpression &left_expression, double constant_value){
+CelExpression & operator == (CelExpression &left_expression,
+                             double constant_value){
     CelExpression *right_expression = new CelExpression(true);
     right_expression->node_type = CelExpression::NODE_CONSTANT;
     right_expression->constant_value = constant_value;
@@ -457,7 +490,8 @@ CelExpression & operator == (CelExpression &left_expression, double constant_val
     return *parent_expression;
 }
 
-CelExpression & operator == (double constant_value, CelExpression &right_expression){
+CelExpression & operator == (double constant_value,
+                             CelExpression &right_expression){
     CelExpression *left_expression = new CelExpression(true);
     left_expression->node_type = CelExpression::NODE_CONSTANT;
     left_expression->constant_value = constant_value;
@@ -470,7 +504,8 @@ CelExpression & operator == (double constant_value, CelExpression &right_express
     return *parent_expression;
 }
 
-CelExpression & operator == (CelExpression &left_expression, CelExpression &right_expression){
+CelExpression & operator == (CelExpression &left_expression,
+                             CelExpression &right_expression){
     CelExpression *parent_expression = new CelExpression(true);
     parent_expression->node_type = CelExpression::NODE_OP_EQ;
     parent_expression->left = &left_expression;
@@ -479,7 +514,8 @@ CelExpression & operator == (CelExpression &left_expression, CelExpression &righ
     return *parent_expression;
 }
 
-CelExpression & operator * (CelExpression &left_expression, double constant_value){
+CelExpression & operator * (CelExpression &left_expression,
+                            double constant_value){
     CelExpression *right_expression = new CelExpression(true);
     right_expression->node_type = CelExpression::NODE_CONSTANT;
     right_expression->constant_value = constant_value;
@@ -492,7 +528,8 @@ CelExpression & operator * (CelExpression &left_expression, double constant_valu
     return *parent_expression;
 }
 
-CelExpression & operator * (double constant_value, CelExpression &right_expression){
+CelExpression & operator * (double constant_value,
+                            CelExpression &right_expression){
     CelExpression *left_expression = new CelExpression(true);
     left_expression->node_type = CelExpression::NODE_CONSTANT;
     left_expression->constant_value = constant_value;
@@ -504,7 +541,8 @@ CelExpression & operator * (double constant_value, CelExpression &right_expressi
 
     return *parent_expression;
 }
-CelExpression & operator * (CelExpression &left_expression, CelExpression &right_expression){
+CelExpression & operator * (CelExpression &left_expression,
+                            CelExpression &right_expression){
     CelExpression *parent_expression = new CelExpression(true);
     parent_expression->node_type = CelExpression::NODE_OP_MULT;
     parent_expression->left = &left_expression;
@@ -513,7 +551,8 @@ CelExpression & operator * (CelExpression &left_expression, CelExpression &right
     return *parent_expression;
 }
 
-CelExpression & operator + (CelExpression &left_expression, double constant_value){
+CelExpression & operator + (CelExpression &left_expression,
+                            double constant_value){
     CelExpression *right_expression = new CelExpression(true);
     right_expression->node_type = CelExpression::NODE_CONSTANT;
     right_expression->constant_value = constant_value;
@@ -526,7 +565,8 @@ CelExpression & operator + (CelExpression &left_expression, double constant_valu
     return *parent_expression;
 }
 
-CelExpression & operator + (double constant_value, CelExpression &right_expression){
+CelExpression & operator + (double constant_value,
+                            CelExpression &right_expression){
     CelExpression *left_expression = new CelExpression(true);
     left_expression->node_type = CelExpression::NODE_CONSTANT;
     left_expression->constant_value = constant_value;
@@ -538,7 +578,8 @@ CelExpression & operator + (double constant_value, CelExpression &right_expressi
 
     return *parent_expression;
 }
-CelExpression & operator + (CelExpression &left_expression, CelExpression &right_expression){
+CelExpression & operator + (CelExpression &left_expression,
+                            CelExpression &right_expression){
     CelExpression *parent_expression = new CelExpression(true);
     parent_expression->node_type = CelExpression::NODE_OP_ADD;
     parent_expression->left = &left_expression;
@@ -547,7 +588,8 @@ CelExpression & operator + (CelExpression &left_expression, CelExpression &right
     return *parent_expression;
 }
 
-CelExpression & operator - (CelExpression &left_expression, double constant_value){
+CelExpression & operator - (CelExpression &left_expression,
+                            double constant_value){
     CelExpression *right_expression = new CelExpression(true);
     right_expression->node_type = CelExpression::NODE_CONSTANT;
     right_expression->constant_value = constant_value;
@@ -560,7 +602,8 @@ CelExpression & operator - (CelExpression &left_expression, double constant_valu
     return *parent_expression;
 }
 
-CelExpression & operator - (double constant_value, CelExpression &right_expression){
+CelExpression & operator - (double constant_value,
+                            CelExpression &right_expression){
     CelExpression *left_expression = new CelExpression(true);
     left_expression->node_type = CelExpression::NODE_CONSTANT;
     left_expression->constant_value = constant_value;
@@ -573,7 +616,8 @@ CelExpression & operator - (double constant_value, CelExpression &right_expressi
     return *parent_expression;
 }
 
-CelExpression & operator - (CelExpression &left_expression, CelExpression &right_expression){
+CelExpression & operator - (CelExpression &left_expression,
+                            CelExpression &right_expression){
     CelExpression *parent_expression = new CelExpression(true);
     parent_expression->node_type = CelExpression::NODE_OP_SUB;
     parent_expression->left = &left_expression;

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void CelVariable::displayMeOnly(){
+void CelVariable::displayMeOnly() const{
     printf("%s", name.c_str());
     if (column_index != -1){
         printf(" (%d)", column_index);
@@ -36,7 +36,7 @@ CelVariable::CelVariable(const char *namestr,
 CelVariable::~CelVariable(){
 }
 
-bool CelVariable::isInteger()
+const bool CelVariable::isInteger()
 {
    return false;
 }

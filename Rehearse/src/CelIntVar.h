@@ -16,7 +16,7 @@ public:
 
     ~CelIntVar();
 
-    bool isInteger();
+    const bool isInteger();
 };
 
 

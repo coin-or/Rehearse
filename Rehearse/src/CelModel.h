@@ -15,7 +15,8 @@ private:
     CoinBuild coin_build;
 
     std::vector<CelVariable *> model_variables;
-    void discoverVariables(CelExpression &expression, bool set_objective_coefficients);
+    void discoverVariables(CelExpression &expression,
+                           bool set_objective_coefficients);
 
 public:
     CelModel(OsiSolverInterface &solver);
@@ -24,8 +25,9 @@ public:
     void addConstraint(CelExpression &expression);
     void setObjective(CelExpression &expression);
     void builderToSolver();
-    double getSolutionValue(CelVariable &variable);
-    double getSolutionValue(CelVariable &variable, OsiSolverInterface &solver);
+    double getSolutionValue(CelVariable &variable) const;
+    double getSolutionValue(CelVariable &variable,
+                            OsiSolverInterface &solver) const;
 
 };
 

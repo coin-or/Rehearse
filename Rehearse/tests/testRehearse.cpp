@@ -15,6 +15,16 @@
 using namespace std;
 
 
+inline void _assert2(const char* expression, const char* file, int line)
+{
+ fprintf(stderr, "Assertion '%s' failed, file '%s' line '%d'.", expression, file, line);
+ abort();
+}
+
+#define assert2(EXPRESSION) ((EXPRESSION) ? (void)0 : _assert2(#EXPRESSION, __FILE__, __LINE__))
+
+
+
 int test_counter = 0;
 
 void exemple1(){
@@ -39,10 +49,10 @@ void exemple1(){
     printf("Solution for x2 : %g\n", model.getSolutionValue(x2));
     printf("Solution objvalue = : %g\n", solver->getObjValue());
 
-    assert(fabs(4 - model.getSolutionValue(x1)) < 0.00000001);
-    assert(fabs(14 - model.getSolutionValue(x2)) < 0.00000001);
-    assert(fabs(18 - (model.getSolutionValue(x1) + model.getSolutionValue(x2)) ) < 0.00000001);
-    assert(fabs(154 - solver->getObjValue()) < 0.00000001);
+    assert2(fabs(4 - model.getSolutionValue(x1)) < 0.00000001);
+    assert2(fabs(14 - model.getSolutionValue(x2)) < 0.00000001);
+    assert2(fabs(18 - (model.getSolutionValue(x1) + model.getSolutionValue(x2)) ) < 0.00000001);
+    assert2(fabs(154 - solver->getObjValue()) < 0.00000001);
 
 
     printf("Test %d : OK\n", ++test_counter);
@@ -73,9 +83,9 @@ void exemple2(){
     printf("Solution for y : %g\n", model.getSolutionValue(y));
     printf("Solution objvalue = : %g\n", solver->getObjValue());
 
-    assert(fabs(3 - model.getSolutionValue(x)) < 0.00000001);
-    assert(fabs(0 - model.getSolutionValue(y)) < 0.00000001);
-    assert(fabs(0.6 - solver->getObjValue()) < 0.00000001);
+    assert2(fabs(3 - model.getSolutionValue(x)) < 0.00000001);
+    assert2(fabs(0 - model.getSolutionValue(y)) < 0.00000001);
+    assert2(fabs(0.6 - solver->getObjValue()) < 0.00000001);
 
     printf("Test %d : OK\n", ++test_counter);
 
@@ -107,9 +117,9 @@ void exemple3(){
 
     printf("Solution objvalue = : %g\n", solver->getObjValue());
 
-    assert(fabs(8.4806 - model.getSolutionValue(x1)) < 0.0001);
-    assert(fabs(4.93103 - model.getSolutionValue(x2)) < 0.0001);
-    assert(fabs(107.274 - solver->getObjValue()) < 0.0001);
+    assert2(fabs(8.4806 - model.getSolutionValue(x1)) < 0.0001);
+    assert2(fabs(4.93103 - model.getSolutionValue(x2)) < 0.0001);
+    assert2(fabs(107.274 - solver->getObjValue()) < 0.0001);
 
     printf("Test %d : OK\n", ++test_counter);
 
@@ -144,9 +154,9 @@ void exemple4(){
 
     printf("Solution objvalue = : %g\n", cbcModel.solver()->getObjValue());
 
-    assert(fabs(9 - model.getSolutionValue(x1, *cbcModel.solver())) < 0.0001);
-    assert(fabs(4 - model.getSolutionValue(x2, *cbcModel.solver())) < 0.0001);
-    assert(fabs(102.5 - cbcModel.solver()->getObjValue()) < 0.0001);
+    assert2(fabs(9 - model.getSolutionValue(x1, *cbcModel.solver())) < 0.0001);
+    assert2(fabs(4 - model.getSolutionValue(x2, *cbcModel.solver())) < 0.0001);
+    assert2(fabs(102.5 - cbcModel.solver()->getObjValue()) < 0.0001);
 
     printf("Test %d : OK\n", ++test_counter);
 
@@ -190,13 +200,12 @@ void chineseRemainders(){
     printf("Solution for t : %g\n", model.getSolutionValue(t, *cbcModel.solver()));
     printf("Solution for u : %g\n", model.getSolutionValue(u, *cbcModel.solver()));
     printf("Solution for v : %g\n", model.getSolutionValue(v, *cbcModel.solver()));
-
     printf("Solution objvalue = : %g\n", cbcModel.solver()->getObjValue());
 
-    assert(fabs(23 - model.getSolutionValue(x, *cbcModel.solver())) < 0.0001);
-    assert(fabs(7 - model.getSolutionValue(t, *cbcModel.solver())) < 0.0001);
-    assert(fabs(4 - model.getSolutionValue(u, *cbcModel.solver())) < 0.0001);
-    assert(fabs(3 - model.getSolutionValue(v, *cbcModel.solver())) < 0.0001);
+    assert2(fabs(23 - model.getSolutionValue(x, *cbcModel.solver())) < 0.0001);
+    assert2(fabs(7 - model.getSolutionValue(t, *cbcModel.solver())) < 0.0001);
+    assert2(fabs(4 - model.getSolutionValue(u, *cbcModel.solver())) < 0.0001);
+    assert2(fabs(3 - model.getSolutionValue(v, *cbcModel.solver())) < 0.0001);
 
     printf("Test %d : OK\n", ++test_counter);
 
@@ -357,9 +366,9 @@ double expressionTest3SolveRef(){
 }
 
 void expressionTest(){
-    assert(expressionTest1SolveExpr() == expressionTest1SolveRef());
-    assert(expressionTest2SolveExpr() == expressionTest2SolveRef());
-    assert(expressionTest3SolveExpr() == expressionTest3SolveRef());
+    assert2(expressionTest1SolveExpr() == expressionTest1SolveRef());
+    assert2(expressionTest2SolveExpr() == expressionTest2SolveRef());
+    assert2(expressionTest3SolveExpr() == expressionTest3SolveRef());
     printf("Test %d : OK\n", ++test_counter);
 
 }
@@ -440,7 +449,7 @@ void assignmentProblemAsTotallyUnimodularWithArray(){
             printf("Solution for x_%d_%d : %g\n", i+1, j+1, x_i_j_value);
 
             // totally unimodularity check
-            assert(fabs(x_i_j_value - 0) < 0.00000001 || fabs(x_i_j_value - 1) < 0.00000001);
+            assert2(fabs(x_i_j_value - 0) < 0.00000001 || fabs(x_i_j_value - 1) < 0.00000001);
         }
     }
 
@@ -530,23 +539,23 @@ void assignmentProblemAsTotallyUnimodular(){
     printf("Solution for x_3_3 : %g\n", x_3_3_value);
 
     // totally unimodularity check
-    assert(fabs(x_1_1_value - 0) < 0.00000001 || fabs(x_1_1_value - 1) < 0.00000001);
-    assert(fabs(x_1_2_value - 0) < 0.00000001 || fabs(x_1_2_value - 1) < 0.00000001);
-    assert(fabs(x_1_3_value - 0) < 0.00000001 || fabs(x_1_3_value - 1) < 0.00000001);
-    assert(fabs(x_2_1_value - 0) < 0.00000001 || fabs(x_2_1_value - 1) < 0.00000001);
-    assert(fabs(x_2_2_value - 0) < 0.00000001 || fabs(x_2_2_value - 1) < 0.00000001);
-    assert(fabs(x_2_3_value - 0) < 0.00000001 || fabs(x_2_3_value - 1) < 0.00000001);
-    assert(fabs(x_3_1_value - 0) < 0.00000001 || fabs(x_3_1_value - 1) < 0.00000001);
-    assert(fabs(x_3_2_value - 0) < 0.00000001 || fabs(x_3_2_value - 1) < 0.00000001);
-    assert(fabs(x_3_3_value - 0) < 0.00000001 || fabs(x_3_3_value - 1) < 0.00000001);
+    assert2(fabs(x_1_1_value - 0) < 0.00000001 || fabs(x_1_1_value - 1) < 0.00000001);
+    assert2(fabs(x_1_2_value - 0) < 0.00000001 || fabs(x_1_2_value - 1) < 0.00000001);
+    assert2(fabs(x_1_3_value - 0) < 0.00000001 || fabs(x_1_3_value - 1) < 0.00000001);
+    assert2(fabs(x_2_1_value - 0) < 0.00000001 || fabs(x_2_1_value - 1) < 0.00000001);
+    assert2(fabs(x_2_2_value - 0) < 0.00000001 || fabs(x_2_2_value - 1) < 0.00000001);
+    assert2(fabs(x_2_3_value - 0) < 0.00000001 || fabs(x_2_3_value - 1) < 0.00000001);
+    assert2(fabs(x_3_1_value - 0) < 0.00000001 || fabs(x_3_1_value - 1) < 0.00000001);
+    assert2(fabs(x_3_2_value - 0) < 0.00000001 || fabs(x_3_2_value - 1) < 0.00000001);
+    assert2(fabs(x_3_3_value - 0) < 0.00000001 || fabs(x_3_3_value - 1) < 0.00000001);
 
     // constraint satisfaction
-    assert(fabs(x_1_1_value + x_1_2_value + x_1_3_value - 1) < 0.00000001);
-    assert(fabs(x_2_1_value + x_2_2_value + x_2_3_value - 1) < 0.00000001);
-    assert(fabs(x_3_1_value + x_3_2_value + x_3_3_value - 1) < 0.00000001);
-    assert(fabs(x_1_1_value + x_2_1_value + x_3_1_value - 1) < 0.00000001);
-    assert(fabs(x_1_2_value + x_2_2_value + x_3_2_value - 1) < 0.00000001);
-    assert(fabs(x_1_3_value + x_2_3_value + x_3_3_value - 1) < 0.00000001);
+    assert2(fabs(x_1_1_value + x_1_2_value + x_1_3_value - 1) < 0.00000001);
+    assert2(fabs(x_2_1_value + x_2_2_value + x_2_3_value - 1) < 0.00000001);
+    assert2(fabs(x_3_1_value + x_3_2_value + x_3_3_value - 1) < 0.00000001);
+    assert2(fabs(x_1_1_value + x_2_1_value + x_3_1_value - 1) < 0.00000001);
+    assert2(fabs(x_1_2_value + x_2_2_value + x_3_2_value - 1) < 0.00000001);
+    assert2(fabs(x_1_3_value + x_2_3_value + x_3_3_value - 1) < 0.00000001);
 
     printf("Test %d : OK\n", ++test_counter);
 
@@ -641,23 +650,23 @@ void assignmentProblemAsIntegerLinear(){
     printf("Solution for x_3_3 : %g\n", x_3_3_value);
 
     // totally unimodularity check
-    assert(fabs(x_1_1_value - 0) < 0.00000001 || fabs(x_1_1_value - 1) < 0.00000001);
-    assert(fabs(x_1_2_value - 0) < 0.00000001 || fabs(x_1_2_value - 1) < 0.00000001);
-    assert(fabs(x_1_3_value - 0) < 0.00000001 || fabs(x_1_3_value - 1) < 0.00000001);
-    assert(fabs(x_2_1_value - 0) < 0.00000001 || fabs(x_2_1_value - 1) < 0.00000001);
-    assert(fabs(x_2_2_value - 0) < 0.00000001 || fabs(x_2_2_value - 1) < 0.00000001);
-    assert(fabs(x_2_3_value - 0) < 0.00000001 || fabs(x_2_3_value - 1) < 0.00000001);
-    assert(fabs(x_3_1_value - 0) < 0.00000001 || fabs(x_3_1_value - 1) < 0.00000001);
-    assert(fabs(x_3_2_value - 0) < 0.00000001 || fabs(x_3_2_value - 1) < 0.00000001);
-    assert(fabs(x_3_3_value - 0) < 0.00000001 || fabs(x_3_3_value - 1) < 0.00000001);
+    assert2(fabs(x_1_1_value - 0) < 0.00000001 || fabs(x_1_1_value - 1) < 0.00000001);
+    assert2(fabs(x_1_2_value - 0) < 0.00000001 || fabs(x_1_2_value - 1) < 0.00000001);
+    assert2(fabs(x_1_3_value - 0) < 0.00000001 || fabs(x_1_3_value - 1) < 0.00000001);
+    assert2(fabs(x_2_1_value - 0) < 0.00000001 || fabs(x_2_1_value - 1) < 0.00000001);
+    assert2(fabs(x_2_2_value - 0) < 0.00000001 || fabs(x_2_2_value - 1) < 0.00000001);
+    assert2(fabs(x_2_3_value - 0) < 0.00000001 || fabs(x_2_3_value - 1) < 0.00000001);
+    assert2(fabs(x_3_1_value - 0) < 0.00000001 || fabs(x_3_1_value - 1) < 0.00000001);
+    assert2(fabs(x_3_2_value - 0) < 0.00000001 || fabs(x_3_2_value - 1) < 0.00000001);
+    assert2(fabs(x_3_3_value - 0) < 0.00000001 || fabs(x_3_3_value - 1) < 0.00000001);
 
     // constraint satisfaction
-    assert(fabs(x_1_1_value + x_1_2_value + x_1_3_value - 1) < 0.00000001);
-    assert(fabs(x_2_1_value + x_2_2_value + x_2_3_value - 1) < 0.00000001);
-    assert(fabs(x_3_1_value + x_3_2_value + x_3_3_value - 1) < 0.00000001);
-    assert(fabs(x_1_1_value + x_2_1_value + x_3_1_value - 1) < 0.00000001);
-    assert(fabs(x_1_2_value + x_2_2_value + x_3_2_value - 1) < 0.00000001);
-    assert(fabs(x_1_3_value + x_2_3_value + x_3_3_value - 1) < 0.00000001);
+    assert2(fabs(x_1_1_value + x_1_2_value + x_1_3_value - 1) < 0.00000001);
+    assert2(fabs(x_2_1_value + x_2_2_value + x_2_3_value - 1) < 0.00000001);
+    assert2(fabs(x_3_1_value + x_3_2_value + x_3_3_value - 1) < 0.00000001);
+    assert2(fabs(x_1_1_value + x_2_1_value + x_3_1_value - 1) < 0.00000001);
+    assert2(fabs(x_1_2_value + x_2_2_value + x_3_2_value - 1) < 0.00000001);
+    assert2(fabs(x_1_3_value + x_2_3_value + x_3_3_value - 1) < 0.00000001);
 
     printf("Test %d : OK\n", ++test_counter);
 
@@ -669,7 +678,7 @@ void testBooleanVar(){
 
     CelBoolVar x1("x1");
 
-    assert(x1.isInteger());
+    assert2(x1.isInteger());
 
     model.setObjective ( x1 );
     model.addConstraint( x1 <= 3.5);
@@ -687,7 +696,7 @@ void testBooleanVar(){
     printf("Solution for x1 : %g\n", x1_value);
     printf("Solution objvalue = : %g\n", cbcModel.solver()->getObjValue());
 
-    assert(fabs(x1_value - 1) < 0.00000001);
+    assert2(fabs(x1_value - 1) < 0.00000001);
     printf("Test %d : OK\n", ++test_counter);
 }
 
@@ -756,6 +765,7 @@ int main(int argc, char *argv[]){
     chineseRemainders();
     expressionTest();
 
+    printf("Everything is OK\n");
 }
 
 

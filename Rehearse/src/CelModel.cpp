@@ -15,7 +15,8 @@ CelModel::~CelModel(){
 }
 
 
-void CelModel::discoverVariables(CelExpression &expression, bool set_objective_coefficients){
+void CelModel::discoverVariables(CelExpression &expression,
+                                 bool set_objective_coefficients){
     int old_column_index = model_variables.size();
     expression.attributeColumnIndex(model_variables);
     int current_column_index = model_variables.size();
@@ -31,7 +32,12 @@ void CelModel::discoverVariables(CelExpression &expression, bool set_objective_c
         for (int i = old_column_index; i<current_column_index; i++){
 
             CelVariable *variable = model_variables[i];
-            solver.addCol(0, NULL, NULL, variable->getLowerBound(), variable->getUpperBound(), set_objective_coefficients ? linear_coefficients[i] : 0);
+            solver.addCol(0, NULL, NULL,
+                          variable->getLowerBound(),
+                          variable->getUpperBound(),
+                          set_objective_coefficients ?
+                            linear_coefficients[i] :
+                            0);
 
             if (variable->isInteger()){
                 solver.setInteger(i);
@@ -83,14 +89,17 @@ void CelModel::addConstraint(CelExpression &expression){
         double lower = 0.0;
         double upper = 0.0;
 
-        expression.fillConstraintLinearCoefficients(linear_coefficients, infinity, lower, upper);
+        expression.fillConstraintLinearCoefficients(linear_coefficients,
+                                                    infinity,
+                                                    lower, upper);
 
 //#define DEBUG_COEFS
 #ifdef DEBUG_COEFS
         printf("\n\n");
         //expression.display();
         printf("lincoef size = %lu \n", linear_coefficients.size());
-        for (LinearCoefficients::iterator it = linear_coefficients.begin(); it != linear_coefficients.end(); ++it){
+        for (LinearCoefficients::iterator it = linear_coefficients.begin();
+             it != linear_coefficients.end(); ++it){
             printf("%f ", *it);
         }
 
@@ -114,7 +123,10 @@ void CelModel::addConstraint(CelExpression &expression){
         printf("\n");
 #endif
 
-        coin_build.addRow(current_column_index, index_array_ptr, coef_array_ptr, lower, upper);
+        coin_build.addRow(current_column_index,
+                          index_array_ptr,
+                          coef_array_ptr,
+                          lower, upper);
 
         delete[] index_array_ptr;
 
@@ -129,7 +141,8 @@ void CelModel::builderToSolver(){
     solver.addRows(coin_build);
 }
 
-double CelModel::getSolutionValue(CelVariable &variable, OsiSolverInterface &external_solver){
+double CelModel::getSolutionValue(CelVariable &variable,
+                                  OsiSolverInterface &external_solver) const {
     int column_index = variable.column_index;
     if (column_index == -1){
         return 0;
@@ -140,7 +153,7 @@ double CelModel::getSolutionValue(CelVariable &variable, OsiSolverInterface &ext
     return solution[column_index];
 }
 
-double CelModel::getSolutionValue(CelVariable &variable){
+double CelModel::getSolutionValue(CelVariable &variable) const{
     int column_index = variable.column_index;
     if (column_index == -1){
         return 0;

@@ -10,7 +10,7 @@ class CelVariable : public CelExpression {
 private:
 protected:
     std::string name;
-    virtual void displayMeOnly();
+    virtual void displayMeOnly() const;
 
 
 private:
@@ -22,10 +22,10 @@ public:
     CelVariable(std::string &name, double lower_bound, double upper_bound);
     CelVariable(const char *namestr, double lower_bound, double upper_bound);
     virtual ~CelVariable();
-    virtual bool isInteger();
+    virtual const bool isInteger();
 
-    double getLowerBound() { return lower_bound; }
-    double getUpperBound() { return upper_bound; }
+    double getLowerBound() const { return lower_bound; }
+    double getUpperBound() const { return upper_bound; }
 
     std::string &getName();
 };

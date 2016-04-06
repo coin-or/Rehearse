@@ -3,7 +3,6 @@
 
 #include "CelCoefficients.fwd.h"
 
-using namespace std;
 
 class CelModel;
 class CelVariable;
@@ -16,7 +15,7 @@ protected:
     int column_index;
     LinearCoefficientMap coefficient_map;
     double constant_coefficient;
-    void attributeColumnIndex(vector<CelVariable *> &model_variables);
+    void attributeColumnIndex(std::vector<CelVariable *> &model_variables);
     void fillConstraintLinearCoefficients(LinearCoefficients &linear_coefficients, double infinity, double &lower, double &upper);
     void fillExpressionLinearCoefficients(LinearCoefficients &linear_coefficients);
     void fillLinearCoefficientMap();

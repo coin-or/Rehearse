@@ -9,9 +9,9 @@ class CelNumVar : public CelVariable {
 public:
 
     CelNumVar();
-    CelNumVar(string &name);
+    CelNumVar(std::string &name);
     CelNumVar(const char *namestr);
-    CelNumVar(string &name, double lower_bound, double upper_bound);
+    CelNumVar(std::string &name, double lower_bound, double upper_bound);
     CelNumVar(const char *namestr, double lower_bound, double upper_bound);
     CelNumVar& operator= (const CelNumVar other);
 

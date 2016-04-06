@@ -8,9 +8,9 @@ class CelIntVar : public CelNumVar {
 public:
 
     CelIntVar();
-    CelIntVar(string &name);
+    CelIntVar(std::string &name);
     CelIntVar(const char *namestr);
-    CelIntVar(string &name, double lower_bound, double upper_bound);
+    CelIntVar(std::string &name, double lower_bound, double upper_bound);
     CelIntVar(const char *namestr, double lower_bound, double upper_bound);
 
 

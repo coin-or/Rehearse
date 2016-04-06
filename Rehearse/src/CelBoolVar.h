@@ -8,7 +8,7 @@ class CelBoolVar : public CelIntVar {
 public:
 
     CelBoolVar();
-    CelBoolVar(string &name);
+    CelBoolVar(std::string &name);
     CelBoolVar(const char *namestr);
     CelBoolVar& operator= (const CelBoolVar other);
 

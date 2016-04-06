@@ -1,6 +1,7 @@
 #include "CelNumVar.h"
 #include "CoinBuild.hpp"
 
+using namespace std;
 
 void CelNumVar::initMe(){
     this->deletable = false;

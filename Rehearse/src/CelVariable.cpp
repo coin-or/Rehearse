@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 
+using namespace std;
+
 void CelVariable::displayMeOnly(){
     printf("%s", name.c_str());
     if (column_index != -1){

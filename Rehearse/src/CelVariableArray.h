@@ -7,15 +7,15 @@
 #include <cstdarg>
 
 
-using namespace std;
+
 
 template<class T>
 class CelVariableArray {
 private:
-    string name;
-    vector<T> list;
-    vector<size_t> dimensions;
-    vector<size_t> dimension_factors;
+    std::string name;
+    std::vector<T> list;
+    std::vector<size_t> dimensions;
+    std::vector<size_t> dimension_factors;
 
     // meta info for index offsets
     int current_dimension_index;
@@ -27,7 +27,7 @@ public:
         current_offset = 0;
     }
 
-    CelVariableArray(string &name) : name(name) {
+    CelVariableArray(std::string &name) : name(name) {
         current_dimension_index = 0;
         current_offset = 0;
     }
@@ -40,14 +40,14 @@ public:
     virtual ~CelVariableArray(){
     }
 
-    string &getName(){
+    std::string &getName(){
         return name;
     }
 
 
     CelVariableArray& operator[](size_t index){
         if (index >= dimensions[current_dimension_index]){
-            throw out_of_range("BAD SUBSCRIPT ERROR");  // commodore64 lover
+            throw std::out_of_range("BAD SUBSCRIPT ERROR");  // commodore64 lover
         }
 
         current_offset += index * dimension_factors[current_dimension_index];
@@ -57,7 +57,7 @@ public:
 
     operator T& () {
         if (current_dimension_index != dimensions.size()){
-            throw out_of_range("Wrong number of array dereferencing");
+            throw std::out_of_range("Wrong number of array dereferencing");
         }
 
         size_t ret_current_offset = current_offset;

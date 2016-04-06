@@ -1,5 +1,6 @@
 #include "CelBoolVar.h"
 
+using namespace std;
 
 CelBoolVar::CelBoolVar(string &name) : CelIntVar(name, 0.0, 1.0) {
 }

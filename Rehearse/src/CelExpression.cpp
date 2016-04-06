@@ -106,8 +106,6 @@ void CelExpression::fillConstraintLinearCoefficients(LinearCoefficients &linear_
         lower = -1.0 * this->constant_coefficient;
         upper = -1.0 * this->constant_coefficient;
     }
-
-    // constant_coefficient = this->constant_coefficient;
 }
 
 

@@ -66,6 +66,11 @@ AC_COIN_CHECK_PACKAGE(Cbc, [osi-cbc])
 AC_COIN_CHECK_PACKAGE(Clp, [osi-clp])
 
 
+CXXFLAGS="$CXXFLAGS -std=c++11"
+
+
+
+
 
 ##############################################################################
 #                  GNU libraries                                             #

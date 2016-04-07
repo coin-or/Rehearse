@@ -3,6 +3,7 @@
 
 #include "CelIntVar.h"
 
+namespace rehearse {
 
 class CelBoolVar : public CelIntVar {
 public:
@@ -16,5 +17,6 @@ public:
 
 };
 
+}   // namespace rehearse
 
 #endif

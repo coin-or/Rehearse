@@ -2,6 +2,8 @@
 
 using namespace std;
 
+namespace rehearse {
+
 CelBoolVar::CelBoolVar(string &name) : CelIntVar(name, 0.0, 1.0) {
 }
 
@@ -22,3 +24,4 @@ CelBoolVar::~CelBoolVar(){
 
 
 
+}   // namespace rehearse

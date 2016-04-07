@@ -2,6 +2,8 @@
 
 using namespace std;
 
+namespace rehearse {
+
 CelIntVar::CelIntVar(string &name) : CelNumVar(name) {
 }
 
@@ -34,3 +36,4 @@ const bool CelIntVar::isInteger(){
     return true;
 }
 
+}   // namespace rehearse

@@ -6,7 +6,7 @@
 #include <vector>
 #include <cstdarg>
 
-
+namespace rehearse {
 
 
 template<class T>
@@ -95,5 +95,6 @@ public:
 
 };
 
+}   // namespace rehearse
 
 #endif

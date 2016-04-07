@@ -4,10 +4,10 @@
 #include "CelVariableArray.h"
 #include "CelBoolVar.h"
 
-
+namespace rehearse {
 
 typedef CelVariableArray<CelBoolVar> CelBoolVarArray;
 
-
+}   // namespace rehearse
 
 #endif

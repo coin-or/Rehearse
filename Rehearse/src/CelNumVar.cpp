@@ -3,6 +3,8 @@
 
 using namespace std;
 
+namespace rehearse {
+
 void CelNumVar::initMe(){
     this->deletable = false;
     this->node_type = CelExpression::NODE_VARIABLE;
@@ -51,4 +53,4 @@ CelNumVar& CelNumVar::operator= (const CelNumVar other){
 CelNumVar::~CelNumVar(){
 }
 
-
+}   // namespace rehearse

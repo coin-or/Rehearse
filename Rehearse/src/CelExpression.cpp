@@ -6,6 +6,8 @@
 
 using namespace std;
 
+namespace rehearse {
+
 CelExpression::CelExpression() : column_index(-1),
                                  node_type(NODE_UNKNOWN),
                                  left(NULL), right(NULL),
@@ -659,7 +661,5 @@ CelExpression & CelExpression::operator = (CelExpression &expression){
 }
 
 
-
-
-
+}   // namespace rehearse
 

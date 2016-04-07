@@ -3,6 +3,7 @@
 
 #include "CelNumVar.h"
 
+namespace rehearse {
 
 class CelIntVar : public CelNumVar {
 public:
@@ -19,5 +20,6 @@ public:
     const bool isInteger();
 };
 
+}   // namespace rehearse
 
 #endif

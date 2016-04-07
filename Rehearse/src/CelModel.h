@@ -9,6 +9,9 @@
 class OsiSolverInterface;
 
 
+namespace rehearse {
+
+
 class CelModel {
 private:
     OsiSolverInterface &solver;
@@ -32,5 +35,6 @@ public:
 };
 
 
+}   // namespace rehearse
 
 #endif

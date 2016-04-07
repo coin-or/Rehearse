@@ -13,7 +13,7 @@
 
 
 using namespace std;
-
+using namespace rehearse;
 
 inline void _assert2(const char* expression, const char* file, int line)
 {

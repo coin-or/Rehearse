@@ -4,8 +4,11 @@
 #include <vector>
 #include <map>
 
+namespace rehearse {
+
 typedef std::vector<double> LinearCoefficients;
 typedef std::map<int, double> LinearCoefficientMap;
 
+}   // namespace rehearse
 
 #endif

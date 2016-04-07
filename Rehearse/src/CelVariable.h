@@ -5,6 +5,7 @@
 
 #include "CelExpression.h"
 
+namespace rehearse {
 
 class CelVariable : public CelExpression {
 private:
@@ -30,5 +31,6 @@ public:
     std::string &getName();
 };
 
+}   // namespace rehearse
 
 #endif

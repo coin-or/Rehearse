@@ -3,6 +3,7 @@
 
 #include "CelCoefficients.fwd.h"
 
+namespace rehearse {
 
 class CelModel;
 class CelVariable;
@@ -94,5 +95,6 @@ public:
     virtual ~CelExpression();
 };
 
+}   // namespace rehearse
 
 #endif

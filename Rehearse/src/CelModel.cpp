@@ -7,6 +7,9 @@
 
 using namespace std;
 
+namespace rehearse {
+
+
 CelModel::CelModel(OsiSolverInterface &solver) : solver(solver) {
 }
 
@@ -177,7 +180,7 @@ double CelModel::getSolutionValue(CelVariable &variable) const{
 
 
 
-
+}   // namespace rehearse
 
 
 

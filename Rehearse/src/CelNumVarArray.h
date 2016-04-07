@@ -4,10 +4,12 @@
 #include "CelVariableArray.h"
 #include "CelNumVar.h"
 
-
+namespace rehearse {
 
 typedef CelVariableArray<CelNumVar> CelNumVarArray;
 
 
+
+}   // namespace rehearse
 
 #endif

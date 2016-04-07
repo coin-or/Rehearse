@@ -4,6 +4,8 @@
 
 using namespace std;
 
+namespace rehearse {
+
 void CelVariable::displayMeOnly() const{
     printf("%s", name.c_str());
     if (column_index != -1){
@@ -40,3 +42,5 @@ const bool CelVariable::isInteger()
 {
    return false;
 }
+
+}   // namespace rehearse

@@ -3,6 +3,7 @@
 
 #include "CelVariable.h"
 
+namespace rehearse {
 
 class CelNumVar : public CelVariable {
     void initMe();
@@ -20,5 +21,6 @@ public:
 
 };
 
+}   // namespace rehearse
 
 #endif

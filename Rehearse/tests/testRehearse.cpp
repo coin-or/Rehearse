@@ -7,9 +7,11 @@
 #include <CelIntVar.h>
 #include <CelBoolVar.h>
 #include <CelNumVarArray.h>
+#include <CelBoolVarArray.h>
 
 #include "CbcModel.hpp"
 #include "OsiClpSolverInterface.hpp"
+#include "OsiCbcSolverInterface.hpp"
 
 
 using namespace std;
@@ -749,7 +751,72 @@ void testVarArray(){
 
 }
 
+// It's the task assignment problems: assign objects in A to objects in B so as to maximize the overall revenue
+// Decision variables: x(a,b) in {0,1} for each a in A and b in B
+// R(a,b)=exp(cos(2*PI*a*b/A*B)) is the revenue of the assignment pair (a,b)
+// max sum_{a in A, b in B} x(a,b) * R(a,b)
+// for each a in A: sum(b in B) x(a,b) <= 1
+// for each b in B: sum(a in A) x(a,b) <= 1
 
+void assignment() {
+    unsigned int A = 40;
+    unsigned int B = 20;
+    double PI = std::acos(-1.0);
+
+    std::cout << "Modeling..." << std::endl;
+    OsiCbcSolverInterface solver;
+    CelModel model(solver);
+
+    // CelBoolVarArray x;
+    // x.multiDimensionResize(2, A, B);
+
+    // Commenting the 2 previous lines and commenting out the following one to test std::vector container
+    std::vector<std::vector<CelBoolVar> > x(A, std::vector<CelBoolVar>(B));
+    CelExpression objective;
+
+    for (unsigned int a = 0 ; a < A ; a++) {
+        for (unsigned int b = 0 ; b < B ; b++) {
+            objective += std::exp(std::cos(2.0*PI*a*b/(A*B))) * x[a][b];
+        }
+    }
+
+    model.setObjective(objective);
+
+    // Constraints
+
+    for (unsigned int a = 0 ; a < A ; a++) {
+        CelExpression cst;
+        for (unsigned int b = 0 ; b < B ; b++) {
+            // objective += std::exp(std::cos(2.0*PI*a*b/(A*B))) * x[a][b];
+            cst += x[a][b];
+        }
+        model.addConstraint(cst <= 1);
+    }
+
+    for (unsigned int b = 0 ; b < B ; b++) {
+        CelExpression cst;
+        for (unsigned int a = 0 ; a < A ; a++) {
+            cst += x[a][b];
+        }
+        model.addConstraint(cst <= 1);
+    }
+
+    solver.setObjSense(-1.0);
+    model.builderToSolver();
+    // solver.writeLp("assignment");
+    std::cout << "Optimizing..." << std::endl;
+    solver.initialSolve();
+    solver.branchAndBound();
+    std::cout << "Assignments:" << std::endl;
+
+    for (unsigned int a = 0 ; a < A ; a++) {
+        for (unsigned int b = 0 ; b < B ; b++) {
+            if (model.getSolutionValue(x[a][b]) == 1) {
+                std::cout << "   " << a << " -> " << b << std::endl;
+            }
+        }
+    }
+}
 
 
 int main(int argc, char *argv[]){
@@ -764,6 +831,7 @@ int main(int argc, char *argv[]){
     exemple4();
     chineseRemainders();
     expressionTest();
+    assignment();
 
     printf("Everything is OK\n");
 }

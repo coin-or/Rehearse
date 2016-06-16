@@ -1,13 +1,11 @@
 #ifndef INC_CELCOEFFICIENTS_FWD_H
 #define INC_CELCOEFFICIENTS_FWD_H
 
-#include <vector>
-#include <map>
+#include <unordered_map>
 
 namespace rehearse {
 
-typedef std::vector<double> LinearCoefficients;
-typedef std::map<int, double> LinearCoefficientMap;
+typedef std::unordered_map<int, double> LinearCoefficientMap;
 
 }   // namespace rehearse
 

@@ -1,6 +1,8 @@
 #ifndef INC_CELEXPRESSION_H
 #define INC_CELEXPRESSION_H
 
+#include <vector>
+
 #include "CelCoefficients.fwd.h"
 
 namespace rehearse {
@@ -35,11 +37,11 @@ protected:
     bool isBinaryOperator(NodeType node_type) const;
     void attributeColumnIndex(std::vector<CelVariable *> &model_variables);
     void fillConstraintLinearCoefficients(
-        LinearCoefficients &linear_coefficients,
+        LinearCoefficientMap &linear_coefficients,
         double infinity,
         double &lower, double &upper);
     void fillExpressionLinearCoefficients(
-        LinearCoefficients &linear_coefficients);
+        LinearCoefficientMap &linear_coefficients);
     void fillLinearCoefficientMap();
     bool hasSeveralConstraints();
 

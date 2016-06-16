@@ -24,9 +24,8 @@ void CelModel::discoverVariables(CelExpression &expression,
     expression.attributeColumnIndex(model_variables);
     int current_column_index = model_variables.size();
 
-    LinearCoefficients linear_coefficients;
+    LinearCoefficientMap linear_coefficients;
     if (set_objective_coefficients){
-        linear_coefficients.resize(current_column_index);
         expression.fillExpressionLinearCoefficients(linear_coefficients);
     }
 
@@ -85,8 +84,7 @@ void CelModel::addConstraint(CelExpression &expression){
         discoverVariables(expression, false);
 
         int current_column_index = model_variables.size();
-        LinearCoefficients linear_coefficients;
-        linear_coefficients.resize(current_column_index);
+        LinearCoefficientMap linear_coefficients;
 
         double infinity = solver.getInfinity();
         double lower = 0.0;
@@ -96,42 +94,32 @@ void CelModel::addConstraint(CelExpression &expression){
                                                     infinity,
                                                     lower, upper);
 
-//#define DEBUG_COEFS
-#ifdef DEBUG_COEFS
-        printf("\n\n");
-        //expression.display();
-        printf("lincoef size = %lu \n", linear_coefficients.size());
-        for (LinearCoefficients::iterator it = linear_coefficients.begin();
-             it != linear_coefficients.end(); ++it){
-            printf("%f ", *it);
+        int num_variables_in_constraint = linear_coefficients.size();
+        int *index_array_ptr = new int[num_variables_in_constraint];
+        double *coef_array_ptr = new double[num_variables_in_constraint];
+        int i = 0;
+        for (auto &coef_info : linear_coefficients){
+            index_array_ptr[i] = coef_info.first;
+            coef_array_ptr[i] = coef_info.second;
+            i++;
         }
 
-        printf(" current_column_index = %d", current_column_index);
-        printf(" lower = %f", lower);
-        printf(" upper = %f", upper);
-        printf("\n\n");
-#endif
-
-        int *index_array_ptr = new int[current_column_index];
-        for (int i=0; i<current_column_index; i++){
-            index_array_ptr[i] = i;
-        }
-        double *coef_array_ptr = &linear_coefficients[0];
-
-#ifdef DEBUG_COEFS
-        printf("\n");
-        for (int i=0; i<current_column_index; i++){
-            printf("%f ", coef_array_ptr[i]);
-        }
-        printf("\n");
-#endif
-
-        coin_build.addRow(current_column_index,
+        coin_build.addRow(num_variables_in_constraint,
                           index_array_ptr,
                           coef_array_ptr,
                           lower, upper);
 
+// #define DEBUG_COEFS
+#ifdef DEBUG_COEFS
+        printf("\n");
+        for (int i=0; i<num_variables_in_constraint; i++){
+            printf("%d -> %f ", index_array_ptr[i], coef_array_ptr[i]);
+        }
+        printf("\n");
+#endif
+
         delete[] index_array_ptr;
+        delete[] coef_array_ptr;
 
     }
 

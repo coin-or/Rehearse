@@ -1,5 +1,5 @@
 #include "CelNumVar.h"
-#include "CoinBuild.hpp"
+#include "CoinFinite.hpp"
 
 using namespace std;
 

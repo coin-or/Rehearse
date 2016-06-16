@@ -55,7 +55,7 @@ void CelExpression::attributeColumnIndex(
 }
 
 void CelExpression::fillExpressionLinearCoefficients(
-    LinearCoefficients &linear_coefficients){
+    LinearCoefficientMap &linear_coefficients){
 
     fillLinearCoefficientMap();
 
@@ -66,7 +66,7 @@ void CelExpression::fillExpressionLinearCoefficients(
 
 
 void CelExpression::fillConstraintLinearCoefficients(
-    LinearCoefficients &linear_coefficients,
+    LinearCoefficientMap &linear_coefficients,
     double infinity,
     double &lower,
     double &upper){

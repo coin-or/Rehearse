@@ -75,6 +75,8 @@ void exemple2(){
     model.addConstraint(       24 <=  8 * x + 12 * y   );
     model.addConstraint(       36 <= 12 * x + 12 * y   );
     model.addConstraint(        4 <=  2 * x +  1 * y   );
+    model.addConstraint(        0 <=  x   );
+    model.addConstraint(        0 <=  y   );
 
     solver->setObjSense(1.0);
     model.builderToSolver();

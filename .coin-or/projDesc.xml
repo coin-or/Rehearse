@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type = "text/xsl" href = "http://www.coin-or.org/projects/autoGen.xsl"?>
+<projectData xmlns="coin-or.org" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="coin-or.org http://www.coin-or.org/projects/autoGen.xsd">
+
+<!--
+  This file is a template that will you fill in in order to provide
+  specific information about your project. Once the template is filled
+  in and checked into your projects repository in the conf/ directory,
+  it will be automatically parsed and displayed in a standard HTML format
+  using XSLT.  When users follow the link to your project from the Projects
+  page on the COIN Web site, the generated HTML is what they will see. The
+  file is extensively commented to help you understand where to fill in
+  the various pieces of required information.
+
+  With a few exceptions, elements are *NOT* optional. They must appear in
+  this file, in order, to pass validation against the schema. Don't delete
+  elements, and don't rearrange them. The schema is in the CoinWeb repo,
+  https://projects.coin-or.org/svn/CoinWeb/trunk/projects/autoGen.xsd
+  for those of you who know and love XML.
+
+  Elements that are optional in the generated HTML will be omitted
+  if you leave them empty (i.e., nothing but whitespace). The XSL
+  that transforms this file into HTML is also in the CoinWeb repo,
+  https://projects.coin-or.org/svn/CoinWeb/trunk/projects/autoGen.xsl
+
+  If you want to display non-ascii characters, you must use numeric
+  character references. E.g., &#xe8; or &#232, not &egrave;. The named
+  entities are not necessarily available when the XML is processed.
+
+  DO NOT use HTML markup in blocks of text. It screws up the validation.
+
+  XML comments are block comments, delimited by the character sequences
+  you see at the start and end of this comment block. Comments don't nest.
+  That's why I'm not repeating the comment delimiters in this paragraph.
+-->
+
+  <projectBasics>
+
+      <!-- Fill in your project's name in this block.                -->
+      <!-- For example, for Creme you could write:                   -->
+      <!--                                                           -->
+      <!-- <projectName>Cr&#xe8;me</projectName>                     -->
+      <!--                                                           -->
+      <!-- This string is displayed in the banner at the top of the  -->
+      <!-- project page. If you do not define projectRepo (next      -->
+      <!-- block) the same string will be used to construct the URL  -->
+      <!-- of your project's Trac page. So if this string isn't      -->
+      <!-- plain ascii, be sure to define projectRepo.               -->
+      <!-- Fill in your text below (outside the comment block).      -->
+
+      <projectName>Rehearse</projectName>
+
+      <!-- Fill in with the appropriate string to construct a URL    -->
+      <!-- for your project's Trac page and SVN repository. For      -->
+      <!-- Creme, the correct string is                              -->
+      <!--                                                           -->
+      <!-- <projectRepo>Creme</projectName>                          -->
+      <!--                                                           -->
+      <!-- Use the right value for the URL for your project.         -->
+      <!-- Fill in your text below (outside the comment block).      -->
+
+      <projectRepo>Rehearse</projectRepo>
+
+      <!-- Fill in a brief description of your project here.         -->
+      <!-- For example, for SYMPHONY, you might put:                 -->
+      <!--                                                           -->
+      <!-- <projectDescription>                                      -->
+      <!--    SYMPHONY is an open-source generic MILP solver,        -->
+      <!--    callable library, and extensible framework for         -->
+      <!--    implementing customized solvers for mixed-integer      -->
+      <!--    linear programs (MILPs). Blah, blah, blah.             -->
+      <!-- </projectDescription>                                     -->
+      <!--                                                           -->
+      <!-- Fill in your text below (outside the comment block)       -->
+
+      <projectDescription>An algebraic modeling library in C++.</projectDescription>
+
+      <projectShortDescription>
+        An algebraic modeling library in C++.
+      </projectShortDescription>
+
+      <!-- Fill in the project manager's name and (obfuscated)       -->
+      <!-- e-mail address here. For example, for the SYMPHONY        -->
+      <!-- project, you could write                                  -->
+      <!--                                                           -->
+      <!--<projectManager>                                           -->
+      <!--   Ted Ralphs, tkralphs at lehigh dot edu                  -->
+      <!--</projectManager>                                          -->
+      <!--                                                           -->
+      <!-- Fill in your text below (outside the comment block).      -->
+
+      <projectManager>Onur Çelebi</projectManager>
+
+      <!-- Fill in the URL you would like use for your main home     -->
+      <!-- page. This could be either your Trac page or a static     -->
+      <!-- page (if you have one). For example, for SYMPHONY, you    -->
+      <!-- would put                                                 -->
+      <!--                                                           -->
+      <!--<projectHomePage>              -->
+      <!--   https://projects.coin-or.org/SYMPHONY                   -->
+      <!--</projectHomePage>                                         -->
+      <!--                                                           -->
+      <!-- Fill in your text below (outside the comment block).       -->
+
+      <projectHomePage>https://projects.coin-or.org/Rehearse</projectHomePage>
+
+      <!-- Fill in the name of the license your project uses and a   -->
+      <!-- link to its page on www.opensource.org. For example, if   -->
+      <!-- you use the EPL, you would put                            -->
+      <!--                                                           -->
+      <!--<projectLicense>               -->
+      <!--  Eclipse Public License 1.0                               -->
+      <!--</projectLicense>                                          -->
+      <!--<projectLicenseURL>                    -->
+      <!--  http://www.opensource.org/licenses/eclipse-1.0           -->
+      <!--</projectLicenseURL>                                       -->
+      <!--                                                           -->
+      <!-- Fill in your text below (outside the comment block).      -->
+
+      <projectLicense>MIT</projectLicense>
+      <projectLicenseURL>http://opensource.org/licenses/MIT</projectLicenseURL>
+
+      <!-- Below, you can list other COIN projects your project      -->
+      <!-- depends on. These are listed one by one, as in the        -->
+      <!-- following example                                         -->
+      <!--                                                           -->
+      <!--<coinLinkedProjects>                                       -->
+      <!--                                                           -->
+      <!--   <coinProject>                                           -->
+      <!--      <projectName>                                        -->
+      <!--         CoinUtils                                         -->
+      <!--      </projectName>                                       -->
+      <!--   </coinProject>                                          -->
+      <!--                                                           -->
+      <!--   <coinProject>                                           -->
+      <!--      <projectName>                                        -->
+      <!--         Cgl                                               -->
+      <!--      </projectName>                                       -->
+      <!--   </coinProject>                                          -->
+      <!--                                                           -->
+      <!--</coinLinkedProjects>                                      -->
+      <!--                                                           -->
+      <!-- Fill in as needed below by adding projectName elements.   -->
+      <!-- You can use as many projectName elements as you need.     -->
+
+      <coinLinkedProjects> <!--TODO fill this out -->
+      </coinLinkedProjects>
+
+      <!-- Below, you can list other packages your project requires  -->
+      <!-- or can use as an option. These are listed one-by-one, as  -->
+      <!-- in the following example:                                 -->
+      <!--                                                           -->
+      <!--<otherLinkedPackages>                                      -->
+      <!--                                                           -->
+      <!--   <otherPackage>                                          -->
+      <!--      <packageName>                                        -->
+      <!--         GLPK                                              -->
+      <!--      </packageName>                                       -->
+      <!--      <packageURL>                                         -->
+      <!--         http://www.gnu.org/software/glpk/                 -->
+      <!--      </packageURL>                                        -->
+      <!--      <requiredOrOptional>                                 -->
+      <!--         Optional                                          -->
+      <!--      </requiredOrOptional>                                -->
+      <!--   </otherPackage>                                         -->
+      <!--                                                           -->
+      <!--   <otherPackage>                                          -->
+      <!--      <packageName>                                        -->
+      <!--         GNU Readline                                      -->
+      <!--      </packageName>                                       -->
+      <!--      <packageURL>                                         -->
+      <!--      </packageURL>                                        -->
+      <!--      <requiredOrOptional>                                 -->
+      <!--         Optional                                          -->
+      <!--      </requiredOrOptional>                                -->
+      <!--   </otherPackage>                                         -->
+      <!--                                                           -->
+      <!--</otherLinkedPackages>                                     -->
+      <!--                                                           -->
+      <!-- Fill in as needed below by adding otherPackage elements.  -->
+      <!-- You can use as many otherPackage elements as you need.    -->
+
+      <otherLinkedPackages>
+      </otherLinkedPackages>
+
+      <!-- Below, you can list the programming language(s) used in   -->
+      <!-- the project. For example:                                 -->
+      <!--<projectLanguage>C</projectLanguage>                       -->
+      <!--                                                           -->
+      <!-- Fill in your text below (outside the comment block).      -->
+
+      <projectLanguage>C++</projectLanguage>
+
+      <!-- The following fields describe the development status      -->
+      <!-- of the project.                                           -->
+      <!--                                                           -->
+      <!--Fill in your text below (outside the comment blocks).      -->
+
+      <developmentStatus>
+
+    <!-- If you are actively managing your project, use        -->
+    <!-- Active. Eventually there may be formal categories.    -->
+
+    <activityStatus>Active</activityStatus>
+
+    <!-- The maturity level is determined during project       -->
+    <!-- review and should have been reported to you. If not   -->
+    <!-- see http://www.coin-or.org/faqs.html#q18 and make an  -->
+    <!-- informed guess. For example,                          -->
+    <!--                                                       -->
+    <!--<maturityLevel>4</maturityLevel>                       -->
+    <!--                                                       -->
+
+    <maturityLevel>4</maturityLevel>
+
+    <!-- Having trouble with the automated system that     -->
+    <!-- generates stable and release version numbers? If  -->
+    <!-- so, you can override one or both with these       -->
+    <!-- elements. DO NOT USE unless necessary, as it will -->
+    <!-- your responsibility to keep them up-to-date. Your -->
+    <!-- text will be used verbatim. These two elements    -->
+    <!-- are the exception to the rule that elements must  -->
+    <!-- appear. These must NOT be uncommented unless      -->
+    <!-- needed.                                           -->
+
+    <!--
+    <stableVersionNumber></stableVersionNumber>
+    <releaseNumber></releaseNumber>
+    -->
+
+      </developmentStatus>
+
+      <!-- Below, you can list the platforms on which your project   -->
+      <!-- has been tested. Again, these are listed one-by-one.      -->
+      <!-- There are fields for both the operating system and the    -->
+      <!-- compiler. Don't get creative and add more!                -->
+      <!--                                                           -->
+      <!--<testedPlatforms>                                          -->
+      <!--                                                           -->
+      <!--   <platform>                                              -->
+      <!--      <operatingSystem>Microsoft Windows</operatingSystem> -->
+      <!--      <compiler>MSVC++/cl</compiler>                       -->
+      <!--   </platform>                                             -->
+      <!--                                                           -->
+      <!--   <platform>                                              -->
+      <!--      <operatingSystem>Microsoft Windows</operatingSystem> -->
+      <!--      <compiler>CYGWIN/cl</compiler>                       -->
+      <!--   </platform>                                             -->
+      <!--                                                           -->
+      <!--</testedPlatforms>               -->
+      <!--                                                           -->
+      <!-- Fill in your text below. Add as many platform elements as -->
+      <!-- you need.                                                 -->
+
+      <testedPlatforms><!--TODO fill this out -->
+      </testedPlatforms>
+
+      <!-- The projectCategories element contains a list of category -->
+      <!-- elements. The text of the category elements will be       -->
+      <!-- displayed as a comma-separated list. The list given here  -->
+      <!-- are standard categories. Please don't create a new one    -->
+      <!-- without good reason. Use as many as are appropriate.      -->
+
+      <projectCategories>
+
+    <!--Below is the list of COIN-OR project categores.    -->
+    <!--Simply "un-comment" any categories that apply to   -->
+    <!--your project.                                      -->
+    
+    <!--   <category>                                      -->
+    <!--        Development tools                          -->
+    <!--    </category>                                    -->
+    <!--    <category>                                     -->
+    <!--        Graphs                                     -->
+    <!--    </category>                                    -->
+    <!--    <category>                                     -->
+    <!--        Interfaces                                 -->
+    <!--    </category>                                    -->
+    <!--    <category>                                     -->
+    <!--        Metaheuristics                             -->
+    <!--    </category>                                    -->
+        <category>                                     
+            Modeling systems                           
+        </category>                                    
+    <!--    <category>                                     -->
+    <!--        Optimization convex non-differentiable     -->
+    <!--    </category>                                    -->
+    <!--    <category>                                     -->
+    <!--        Optimization deterministic linear continuous -->
+    <!--    </category>                                    -->
+    <!--    <category>                                     -->
+    <!--        Optimization deterministic linear discrete -->
+    <!--    </category>                                    -->
+    <!--    <category>                                     -->
+    <!--        Optimization deterministic nonlinear       -->
+    <!--    </category>                                    -->
+    <!--    <category>                                     -->
+    <!--        Optimization deterministic nonlinear discrete -->
+    <!--    </category>                                    -->
+    <!--    <category>                                     -->
+    <!--        Optimization deterministic semidefinite continuous -->
+    <!--    </category>                                    -->
+    <!--    <category>                                     -->
+    <!--        Optimization stochastic                    -->
+    <!--    </category>                                    -->
+    <!--    <category>                                     -->
+    <!--        Optimization utility                       -->
+    <!--    </category>                                    -->
+    
+      </projectCategories>
+      
+  </projectBasics>
+
+  <!-- Below, you can specify extra links for the left-hand side menu.   -->
+  <!-- These are optional, so if you leave an element empty, there will  -->
+  <!-- there will be no corresponding menu item. The first three left-   -->
+  <!-- links (COIN-OR Home, Projects, Project Management Page) are       -->
+  <!-- automatic; you cannot affect them.                                -->
+  <!--                                                                   -->
+  <!-- For SYMPHONY, this block would look like this:                    -->
+  <!--                                                                   -->
+  <!-- <leftMenuLinks>                                                   -->
+  <!--                                                                   -->
+  <!--   <documentation>                                                 -->
+  <!--      http://www.coin-or.org/SYMPHONY/man-5.1                      -->
+  <!--   </documentation>                                                -->
+  <!--                                                                   -->
+  <!--   <sourceCodeDownload>                                            -->
+  <!--      http://www.coin-or.org/download/source/SYMPHONY              -->
+  <!--   </sourceCodeDownload>                                           -->
+  <!--                                                                   -->
+  <!--   <binaryDownload>                                                -->
+  <!--      http://www.coin-or.org/download/binary/SYMPHONY              -->
+  <!--   </binaryDownload>                                               -->
+  <!--                                                                   -->
+  <!--   <mailingList>                                                   -->
+  <!--      http://list.coin-or.org/mailman/listinfo/coin-symphony       -->
+  <!--   </mailingList>                                                  -->
+  <!-- </leftMenuLinks>                                                  -->
+  <!--                                                                   -->
+  <!-- Fill in your text below (outside the comment block).              -->
+
+  <leftMenuLinks>  <!--TODO fill this out -->
+
+    <documentation> </documentation>
+
+    <sourceCodeDownload> </sourceCodeDownload>
+
+    <binaryDownload> </binaryDownload>
+
+    <mailingList> </mailingList>
+
+  </leftMenuLinks>
+
+</projectData>
